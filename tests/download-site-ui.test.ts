@@ -205,7 +205,7 @@ describe('download site app', () => {
           changeSummary: {
             en: {
               compareUrl:
-                'https://github.com/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
+                'https://github.com/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
               added: ['Compact desktop release cards'],
               changed: ['Reuse compare parser'],
               fixed: ['Avoid stale release compare cache'],
@@ -213,7 +213,7 @@ describe('download site app', () => {
             },
             'zh-CN': {
               compareUrl:
-                'https://github.com/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
+                'https://github.com/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
               added: ['精简桌面版本卡片'],
               changed: ['复用版本对比解析器'],
               fixed: ['避免旧的版本对比缓存'],

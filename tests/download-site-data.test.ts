@@ -136,11 +136,11 @@ describe('download site release data', () => {
 ## Fixed
 - restore beta release summaries
 
-**Full Changelog**: https://github.com/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15`,
+**Full Changelog**: https://github.com/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15`,
         prerelease: true,
         published_at: '2026-06-26T17:28:37Z',
         html_url:
-          'https://github.com/jaytantech3000/CineHarbor/releases/tag/desktop-v200.0.1-beta.15',
+          'https://github.com/CineHarbor/cineharbor-desktop/releases/tag/desktop-v200.0.1-beta.15',
         assets: [
           {
             name: 'latest.json',
@@ -240,7 +240,7 @@ describe('download site release data', () => {
       changeSummary: {
         en: {
           compareUrl:
-            'https://github.com/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
+            'https://github.com/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
           added: ['replace web mocks with netease routes'],
           changed: [],
           fixed: ['restore beta release summaries'],
@@ -248,7 +248,7 @@ describe('download site release data', () => {
         },
         'zh-CN': {
           compareUrl:
-            'https://github.com/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
+            'https://github.com/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.14...desktop-v200.0.1-beta.15',
           added: ['用网易云路由替换 Web Mock'],
           changed: [],
           fixed: ['恢复 Beta 版本摘要'],
@@ -274,7 +274,7 @@ describe('download site release data', () => {
 
   it('hydrates compare-only release notes into grouped bilingual summaries', async () => {
     const compareUrl =
-      'https://github.com/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.15...desktop-v200.0.1-beta.16';
+      'https://github.com/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.15...desktop-v200.0.1-beta.16';
 
     const normalizedReleases =
       downloadSiteDataModule.normalizeDownloadSiteReleases([
@@ -286,7 +286,7 @@ describe('download site release data', () => {
           prerelease: true,
           published_at: '2026-06-27T01:00:00Z',
           html_url:
-            'https://github.com/jaytantech3000/CineHarbor/releases/tag/desktop-v200.0.1-beta.16',
+            'https://github.com/CineHarbor/cineharbor-desktop/releases/tag/desktop-v200.0.1-beta.16',
           assets: [
             {
               name: 'CineHarbor.Desktop_200.0.1-beta.16_windows-x64-setup.exe',
@@ -328,7 +328,7 @@ describe('download site release data', () => {
 
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     expect(fetchImpl).toHaveBeenCalledWith(
-      'https://api.github.com/repos/jaytantech3000/CineHarbor/compare/desktop-v200.0.1-beta.15...desktop-v200.0.1-beta.16',
+      'https://api.github.com/repos/CineHarbor/cineharbor-desktop/compare/desktop-v200.0.1-beta.15...desktop-v200.0.1-beta.16',
       expect.objectContaining({
         cache: 'no-store',
       })

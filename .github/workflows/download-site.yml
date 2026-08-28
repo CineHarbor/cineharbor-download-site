@@ -1,0 +1,53 @@
+name: Deploy Download Site
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'assets/**'
+      - 'index.html'
+      - 'scripts/**'
+      - 'src/config/desktop-release.json'
+      - '.github/workflows/download-site.yml'
+  workflow_dispatch:
+  schedule:
+    # Export fresh release data daily in case a desktop release published
+    # without a dispatch event.
+    - cron: '17 3 * * *'
+
+concurrency:
+  group: download-site-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Build and Publish Download Site
+    runs-on: ubuntu-latest
+    env:
+      CINEHARBOR_RELEASE_REPOSITORY: CineHarbor/cineharbor-desktop
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          package-manager-cache: false
+
+      - name: Export download site data
+        run: node scripts/export-download-site-data.mjs --repo CineHarbor/cineharbor-desktop --output .download-site-build/releases.json
+
+      - name: Build download site
+        run: node scripts/build-download-site.mjs --data .download-site-build/releases.json --output download-site-dist
+
+      - name: Publish download site branch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/publish-download-site-branch.sh
