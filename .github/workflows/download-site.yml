@@ -88,3 +88,26 @@ jobs:
           path: .download-site-build/releases.json
           if-no-files-found: error
           retention-days: 7
+
+  repeat_verified_main:
+    name: Repeat successful main verification once
+    needs: [verify, deploy]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Dispatch a second clean verification of unchanged main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')
+          if [ "$current" != "$GITHUB_SHA" ]; then
+            echo 'Main advanced; the newer revision owns its repeat verification.'
+            exit 0
+          fi
+          gh workflow run download-site.yml --repo "$GITHUB_REPOSITORY" --ref main
