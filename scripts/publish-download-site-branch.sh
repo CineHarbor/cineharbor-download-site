@@ -13,6 +13,11 @@ if [ ! -d "$source_dir" ]; then
   exit 1
 fi
 
+if [ "$target_branch" != "gh-pages" ]; then
+  echo "Refusing to publish generated site files to a non-deployment branch" >&2
+  exit 1
+fi
+
 source_dir_abs="$(cd "$source_dir" && pwd)"
 repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 work_dir="$(mktemp -d)"
@@ -36,6 +41,7 @@ fi
 
 find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
 cp -R "$source_dir_abs"/. .
+rm -f .cineharbor-download-site-build
 touch .nojekyll
 
 git config user.name "github-actions[bot]"

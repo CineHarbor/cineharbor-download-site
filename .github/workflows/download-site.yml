@@ -1,53 +1,90 @@
-name: Deploy Download Site
+name: Download Site CI and Deployment
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'assets/**'
-      - 'index.html'
-      - 'scripts/**'
-      - 'src/config/desktop-release.json'
-      - '.github/workflows/download-site.yml'
+    branches: [main]
+  pull_request:
   workflow_dispatch:
   schedule:
-    # Export fresh release data daily in case a desktop release published
-    # without a dispatch event.
     - cron: '17 3 * * *'
 
 concurrency:
   group: download-site-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
+  verify:
+    name: Typecheck, tests and clean static build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.14.0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Install frozen dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Existing release-data and UI tests
+        run: pnpm test --runInBand
+      - name: Build and filesystem regression tests
+        run: pnpm test:build
+      - name: JavaScript and shell syntax
+        run: |
+          node --check assets/app.js
+          node --check scripts/export-download-site-data.mjs
+          bash -n scripts/publish-download-site-branch.sh
+      - name: Build from the standalone repository layout
+        run: pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: download-site-fixture-${{ github.sha }}
+          path: download-site-dist/
+          if-no-files-found: error
+          retention-days: 7
+
   deploy:
-    name: Build and Publish Download Site
-    runs-on: ubuntu-latest
+    name: Export actual releases and publish deployment branch
+    needs: verify
+    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
     env:
       CINEHARBOR_RELEASE_REPOSITORY: CineHarbor/cineharbor-desktop
-
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      - uses: actions/checkout@v5
         with:
-          node-version: 20
+          persist-credentials: false
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
           package-manager-cache: false
-
-      - name: Export download site data
-        run: node scripts/export-download-site-data.mjs --repo CineHarbor/cineharbor-desktop --output .download-site-build/releases.json
-
-      - name: Build download site
-        run: node scripts/build-download-site.mjs --data .download-site-build/releases.json --output download-site-dist
-
-      - name: Publish download site branch
-        shell: bash
+      - name: Export actual public release data
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/export-download-site-data.mjs --repo CineHarbor/cineharbor-desktop --output .download-site-build/releases.json
+      - name: Build production site
+        run: node scripts/build-download-site.mjs --data .download-site-build/releases.json --output download-site-dist
+      - name: Publish gh-pages without touching source branches
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash scripts/publish-download-site-branch.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: download-site-release-data-${{ github.run_id }}
+          path: .download-site-build/releases.json
+          if-no-files-found: error
+          retention-days: 7

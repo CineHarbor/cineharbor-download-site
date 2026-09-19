@@ -2,6 +2,7 @@
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import downloadSiteDataModule from './download-site-data.js';
 import {
@@ -25,7 +26,6 @@ function getAccessToken() {
 function getRepository(metadata, args) {
   return (
     args.get('repo') ||
-    readEnvValue('GITHUB_REPOSITORY') ||
     readEnvValue('CINEHARBOR_RELEASE_REPOSITORY') ||
     metadata.releaseRepository
   );
@@ -58,6 +58,7 @@ async function fetchGithubReleases(repository, token) {
     {
       headers: buildHeaders(token),
       cache: 'no-store',
+      signal: AbortSignal.timeout(30_000),
     }
   );
 
@@ -85,8 +86,12 @@ async function main() {
     return;
   }
 
-  const metadata = await readDesktopReleaseMetadata(process.cwd());
+  const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const metadata = await readDesktopReleaseMetadata(projectRoot);
   const repository = getRepository(metadata, args);
+  if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository) || repository.split('/').some((part) => part === '.' || part === '..')) {
+    throw new Error('Invalid release repository');
+  }
   const outputPath = getOutputPath(args);
   const releases = await fetchGithubReleases(repository, getAccessToken());
   const payload = buildDownloadSitePayload({

@@ -1,9 +1,11 @@
 # cineharbor-download-site Current State
 
-CineHarbor 桌面发行下载站（纯静态）。P6 阶段迁入并改名。
+Target: CineHarbor **1.0.0**, release preparation in progress; **RELEASE_READY = false**. The seven-repository scope and gate rules are in the facade `docs/releases/1.0.0/`.
 
-- `index.html` / `assets/app.css` / `assets/app.js`：下载站页面（多语言、主题、发行列表）。
-- `assets/releases.template.json`：发行数据模板，`repository` 指向 `CineHarbor/cineharbor-desktop`，由发布管线注入实际 releases。
-- 发行页面聚合自 `CineHarbor/cineharbor-desktop` 的 GitHub Releases。
-- 许可证：CC BY-NC-SA 4.0。
-- Agnir 操作基线：`iorLab/agnir` 稳定发布 `v1.0.2`（revision `b5626394ec40a5cb7a28c01892acde07cc0adc8e`，distribution `agnir-agent-skill`）；Core/Profile 保持 `1.0` / `repository-filesystem/1.0`，2026-09-19 完成 compatible operational upgrade，canonical 激活路径为 `AGENTS.md → AGNIR.md → AGNIR.yaml`；既有 Project identity、lineage 与 durable memory 保持不变。
+This repository is the static site root: `index.html`, `assets/app.css`, `assets/app.js` and the release-data template. It aggregates public releases from `CineHarbor/cineharbor-desktop`.
+
+The migrated build script incorrectly required a nonexistent `download-site/` child directory and recursively removed arbitrary requested output before validating inputs. It now locates its own repository, copies only site files, validates release data first, stages output, and rejects source/ancestor/symlink/unowned output directories. Seven dependency-free Node regression tests passed locally, including invocation from another working directory and preservation of unrelated or previous output.
+
+The exporter is repository-relative, gives the explicit release repository precedence, and bounds GitHub fetches. The publisher only targets `gh-pages` and omits local build ownership metadata. CI now requires frozen installation, typecheck, existing data/UI tests, build safety tests, syntax checks and a clean preview build before actual release-data export and deployment-branch publication. Remote CI, public download-link validation and served-site smoke are pending observed execution; workflow configuration is not a deployment success claim.
+
+Project `urn:cineharbor:project:cineharbor-download-site`; lineage `urn:cineharbor:lineage:cineharbor-download-site`. Core/Profile 1.0 / repository-filesystem/1.0 and Agnir operations v1.0.2 at `b5626394ec40a5cb7a28c01892acde07cc0adc8e` remain unchanged. License: CC-BY-NC-SA-4.0. Historical initialization is committed; no initialization-to-submit prerequisite remains.
