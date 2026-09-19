@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-09-19T03:24:53.738Z",
+  "repository": "CineHarbor/cineharbor-desktop",
+  "releases": [
+    {
+      "id": "378518356",
+      "tagName": "desktop-v0.1.0",
+      "version": "0.1.0",
+      "name": "CineHarbor Desktop 0.1.0",
+      "prerelease": false,
+      "publishedAt": "2026-08-28T13:52:15Z",
+      "htmlUrl": "https://github.com/CineHarbor/cineharbor-desktop/releases/tag/desktop-v0.1.0",
+      "notes": "**Full Changelog**: https://github.com/CineHarbor/cineharbor-desktop/commits/desktop-v0.1.0",
+      "changeSummary": null,
+      "assets": [
+        {
+          "fileName": "CineHarbor.Desktop_0.1.0_windows-x64-setup.exe",
+          "platformLabel": "Windows x64",
+          "downloadUrl": "https://github.com/CineHarbor/cineharbor-desktop/releases/download/desktop-v0.1.0/CineHarbor.Desktop_0.1.0_windows-x64-setup.exe",
+          "size": 32278645
+        },
+        {
+          "fileName": "CineHarbor.Desktop_0.1.0_macos-arm64.app.tar.gz",
+          "platformLabel": "macOS Apple Silicon",
+          "downloadUrl": "https://github.com/CineHarbor/cineharbor-desktop/releases/download/desktop-v0.1.0/CineHarbor.Desktop_0.1.0_macos-arm64.app.tar.gz",
+          "size": 36923961
+        },
+        {
+          "fileName": "CineHarbor.Desktop_0.1.0_macos-arm64.dmg",
+          "platformLabel": "macOS Apple Silicon",
+          "downloadUrl": "https://github.com/CineHarbor/cineharbor-desktop/releases/download/desktop-v0.1.0/CineHarbor.Desktop_0.1.0_macos-arm64.dmg",
+          "size": 36516214
+        },
+        {
+          "fileName": "CineHarbor.Desktop_0.1.0_macos-x64.app.tar.gz",
+          "platformLabel": "macOS Intel",
+          "downloadUrl": "https://github.com/CineHarbor/cineharbor-desktop/releases/download/desktop-v0.1.0/CineHarbor.Desktop_0.1.0_macos-x64.app.tar.gz",
+          "size": 37564497
+        },
+        {
+          "fileName": "CineHarbor.Desktop_0.1.0_macos-x64.dmg",
+          "platformLabel": "macOS Intel",
+          "downloadUrl": "https://github.com/CineHarbor/cineharbor-desktop/releases/download/desktop-v0.1.0/CineHarbor.Desktop_0.1.0_macos-x64.dmg",
+          "size": 37295508
+        }
+      ]
+    }
+  ]
+}
