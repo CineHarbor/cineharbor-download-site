@@ -1,21 +1,11 @@
 # cineharbor-download-site Current State
 
-Target: CineHarbor **1.0.0 public release**, with hard gates enforced. **RELEASE_READY = false; PUBLIC_RELEASE_EXECUTED = false.** The seven-repository scope and gate rules are in the facade `docs/releases/1.0.0/`.
+Target: **1.0.0 release-ready**, subject to the canonical facade scope. **RELEASE_READY=false; PUBLIC_RELEASE_EXECUTED=false.** Preparation does not authorize public 1.0.0 publication.
 
-This repository is the static download/release site and aggregates public releases from `CineHarbor/cineharbor-desktop`.
+This repository builds the static site from actual public Desktop releases. The package is 1.0.0. The remaining upstream-derived desktopVersion 200.0.1 has been replaced with 1.0.0 preparation metadata; it does not populate the release feed. The preview template remains empty, and draft RCs are excluded. Public Desktop 0.1.0 remains the observed old-version baseline, not a claim that 1.0.0 assets exist.
 
-## Verified predecessor
+The candidate adds explicit version/ownership, empty-preview and draft-exclusion regressions, and ignores only owned build output directories. Source 03ae12c252c3796c2751b1c335585ff8a76b8eec is the base. Local frozen-equivalent restored dependencies were hash verified; typecheck, Jest, 10 Node build/regression tests, static build and syntax checks passed. Require full PR CI and two complete main verification/deployment executions at the eventual exact SHA before certifying it.
 
-Source `28bbe839f9507887fbbb6003c29d2f1c405455b4` passed the complete Download Site workflow twice: push run `35418450602` and scheduled run `35431209116`. Those executions included frozen install, typecheck, tests, build-safety regressions, syntax checks, static build, real public-release data export and gh-pages publication.
+The existing workflow exports actual public releases, publishes only gh-pages, and repeats a successful unchanged main once. A generated branch push is not proof of a served production site, real installer signatures or update acceptance.
 
-## 1.0.0 alignment and deterministic repeat
-
-The release branch changes `package.json` version from `0.1.0` to `1.0.0`. The pnpm lock has no root-package version field and therefore needs no synthetic lock mutation.
-
-The workflow also gains a bounded `repeat_verified_main` job: after a successful main push has completed both verification and gh-pages deployment, it verifies that main still equals `GITHUB_SHA` and dispatches exactly one clean `workflow_dispatch` run. Dispatch runs do not recursively dispatch. This makes the two-run final-revision gate deterministic instead of waiting for the daily schedule.
-
-PR validation and two post-merge main executions are required for the new revision. Served-site smoke and final 1.0.0 asset/link validation remain separate release gates.
-
-See `.agnir/evidence/2026-09-19-version-repeat-gate.md`.
-
-Project `urn:cineharbor:project:cineharbor-download-site`; lineage `urn:cineharbor:lineage:cineharbor-download-site`. Core/Profile 1.0 / repository-filesystem/1.0 and Agnir operations v1.0.2 at `b5626394ec40a5cb7a28c01892acde07cc0adc8e` remain unchanged. License: CC-BY-NC-SA-4.0.
+See `.agnir/evidence/2026-09-20-version-identity.md`. Project urn:cineharbor:project:cineharbor-download-site; lineage urn:cineharbor:lineage:cineharbor-download-site; Agnir 1.0 / repository-filesystem/1.0, operations 1.0.2 and existing provenance unchanged. License CC-BY-NC-SA-4.0.

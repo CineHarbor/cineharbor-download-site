@@ -5,3 +5,5 @@
 .env
 .env*.local
 .DS_Store
+/download-site-dist/
+/.download-site-build/
