@@ -1,8 +1,8 @@
 # cineharbor-download-site Next Actions
 
-1. Run the 1.0.0 version/repeat-gate branch through PR verification. After merge, require the push workflow and its automatically dispatched second clean run to both succeed on one exact main SHA.
-2. Verify the served production GitHub Pages/download site, current public release versions, architecture labels and actual asset URLs. A gh-pages push alone is not served-site acceptance.
-3. After Desktop 1.0.0 is publicly released, verify the deployment refresh exposes only complete public assets, checksums/signatures and correct version metadata.
-4. Complete license/security/brand evidence and reconcile the facade release matrix.
+1. Require complete PR verification and two successful main verification/export/gh-pages executions for the version-identity candidate. Inspect actual mandatory steps, not just overall conclusions.
+2. Verify the served site separately, including current public versions, platform labels and asset links. Preserve the distinction between 1.0.0 preparation metadata and actual publicly available installers.
+3. Include this repository's final immutable SHA and observed deployment evidence in the facade matrix. Do not change RELEASE_READY based on a static preview or branch push alone.
+4. Complete final license/security/brand review and, only after separately authorized genuine 1.0.0 publication, verify release-data refresh. Signed old-to-new Desktop upgrade remains a separate obligation.
 
-Continue autonomously under the Principal's release authorization; do not weaken deployment or publication checks.
+Continue independent work without weakening the canonical release gates.
